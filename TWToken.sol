@@ -33,8 +33,6 @@ contract TWToken is
   uint256 private _launchpadSupplied;
   address public launchPad;
 
-  event SetFeeAddress(address indexed prev, address indexed to);
-
   constructor(
     address feeAddr,
     uint256 maxLaunchpad,
@@ -82,6 +80,14 @@ contract TWToken is
     emit SetLaunchPad(prev, addr);
   }
 
+  function setMaxLaunchPadSupply(uint256 max) external onlyRole(TWTOKEN_ROLE) {
+    require(max > 0, "maxLaunchPadSupply shold not be ZERO");
+    uint256 prev = _maxLaunchpadSupply;
+    _maxLaunchpadSupply = max;
+
+    emit SetMaxLaunchPadSupply(prev, max);
+  }
+
   function setWatchInfo(uint256 tokenId, TWInfo calldata info)
     external
     onlyRole(TWINFO_EDIT_ROLE)
@@ -106,7 +112,7 @@ contract TWToken is
       class: info.class,
       exchangeFee: info.exchangeFee,
       exchangeTermSec: info.exchangeTermSec,
-      storageAmount: info.storageAmount,
+      pointLimit: info.pointLimit,
       remainedExchangeSec: 0,
       expectedExchangeTime: 0,
       nextMixTime: info.class < TWClass.ZENITH ? block.timestamp : 0

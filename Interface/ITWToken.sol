@@ -17,7 +17,7 @@ interface ITWToken is IERC721Enumerable {
     TWClass class;
     uint64 exchangeFee;
     uint128 exchangeTermSec;
-    uint128 storageAmount;
+    uint128 pointLimit;
   }
 
   struct TWInfo {
@@ -25,13 +25,15 @@ interface ITWToken is IERC721Enumerable {
     TWClass class;
     uint64 exchangeFee;
     uint128 exchangeTermSec;
-    uint128 storageAmount;
+    uint128 pointLimit;
     uint128 remainedExchangeSec;
     uint256 expectedExchangeTime;
     uint256 nextMixTime;
   }
 
   event SetLaunchPad(address indexed prev, address indexed to);
+  event SetMaxLaunchPadSupply(uint256 indexed prev, uint256 indexed to);
+  event SetFeeAddress(address indexed prev, address indexed to);
   event MakeWatch(address indexed userAddress, uint256 indexed tokenId);
 
   function getWatchInfo(uint256 tokenId) external view returns (TWInfo memory);
